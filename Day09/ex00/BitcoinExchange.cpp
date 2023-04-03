@@ -6,47 +6,40 @@
 /*   By: yamzil <yamzil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 18:11:32 by yamzil            #+#    #+#             */
-/*   Updated: 2023/03/24 17:04:57 by yamzil           ###   ########.fr       */
+/*   Updated: 2023/04/03 02:11:07 by yamzil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 
-void	fillMapWithDatabaseData(std::ifstram data_base, std::map<std::string, float> map_csv)
+void 	handle_error(int nb)
 {
-	data_base("./data.csv");
+	if (nb == 0)
+	{
+		std::cerr << "Few argumments proved" << std::endl;
+    	exit (0);
+	}
+	else if (nb == 1)
+	{
+		std::cerr << "cannot open the file" << std::endl;
+    	exit (0);
+	}
+}
+
+void	fillMapWithDatabaseData(std::ifstream& data_base, std::map<std::string, std::string> map_csv)
+{
 	std::string	line;
-	while (std::getline)
-}
-int main(int ac, char **av)
-{
-    if (ac == 2)
+	while (std::getline(data_base, line))
     {
-        // std::ifstream data_base("./data.csv");
-        if (!data_base.is_open())
-        {
-            std::cerr << "cannot open the file" << std::endl;
-            return 1;
-        }
-        // std::map<std::string, float> map_csv;
-        std::string line;
-        while (std::getline(data_base, line))
-        {
-            std::string date;
-            float price;
-            std::istringstream ss(line);
-            ss >> date >> price;
-            map_csv[date] = price;
-        }
-        std::ofstream output(av[1]);
-        data_base.close();
+		std::size_t pos = line.find(",");
+		std::string date = line.substr(0, pos);
+		std::string price = line.substr(pos + 1);
+        map_csv[date] = price;
     }
-    else
-    {
-        std::cerr << "usage: " << av[0] << " output_file" << std::endl;
-        return 1;
-    }
-
-    return 0;
+	// std::map<std::string, std::string>::iterator it = map_csv.begin();
+	// while (it != map_csv.end())
+	// {
+	// 	std::cout << it->first << "	" << it->second << std::endl;
+	// 	it++;
+	// }
 }
-
