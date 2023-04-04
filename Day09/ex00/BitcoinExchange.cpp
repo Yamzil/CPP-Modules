@@ -6,7 +6,7 @@
 /*   By: yamzil <yamzil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 18:11:32 by yamzil            #+#    #+#             */
-/*   Updated: 2023/04/03 02:11:07 by yamzil           ###   ########.fr       */
+/*   Updated: 2023/04/04 02:50:31 by yamzil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@ void 	handle_error(int nb)
 	else if (nb == 1)
 	{
 		std::cerr << "cannot open the file" << std::endl;
+    	exit (0);
+	}
+	else if (nb == 2)
+	{
+		std::cerr << "first line should be date | value" << std::endl;
+    	exit (0);
+	}
+	else if (nb == 3)
+	{
+		std::cerr << "file has multiple/or no date | value" << std::endl;
     	exit (0);
 	}
 }
