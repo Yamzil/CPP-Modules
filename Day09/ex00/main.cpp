@@ -6,7 +6,7 @@
 /*   By: yamzil <yamzil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 22:30:20 by yamzil            #+#    #+#             */
-/*   Updated: 2023/04/04 18:15:39 by yamzil           ###   ########.fr       */
+/*   Updated: 2023/04/07 02:48:26 by yamzil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,50 +25,40 @@ void	skipspace(std::string& line)
 
 bool	validvalueformat(std::string& line)
 {
-	bool input =  false;
+	int	count = 0;
+	if (line.empty())
+		return (false);
 	for (std::string::const_iterator it = line.begin(); it != line.end(); ++it) 
 	{
-		if (*it == '+' || *it == '-')
-			*it++;
-		else if (*it == '.')
+		if (*it == '.')
 		{
-			if (input)
+			count++;
+			if (count != 1)
 				return (false);
-			else
-				input = true;
 		}
-    	else if (!std::isdigit(*it))
-		{
-			std::cout << *it << "value not a digit number" << std::endl;
-			continue;
-		}
+		else if (!std::isdigit(*it))
+			return (false);
 	}
-	return (false);
+	return (true);
 }
 
-void	validdateformat(std::string& line)
+bool	validdateformat(std::string& line)
 {
 	int year, month, day;
 	if (std::sscanf(line.c_str(), "%d-%d-%d", &year, &month, &day) != 3)
-	{
-		std::cout << "Error invalid date" << std::endl;
-		exit (1);
-	}
+		return (false);
 	else if (year < 2008 || year > 2023)
-	{
-		std::cerr << "Error with year format" << std::endl;
-		exit (1);
-	}
+		return (false);
 	else if (month < 1 || month > 12)
-	{
-		std::cerr << "Error with month format" << std::endl;
-		exit (1);
-	}
+		return (false);
 	else if (day < 1 || day > 31)
+		return (false);
+	else if (month == 2)
 	{
-		std::cerr << "Error with day format" << std::endl;
-		exit (1);
+		if (day > 29)
+			return (false);
 	}
+	return (true);
 }
 
 void	parsefirstline(std::ifstream& input_file)
@@ -84,53 +74,64 @@ void	parsefirstline(std::ifstream& input_file)
 		handle_error(3);
 }
 
-void	parsingfile(std::ifstream& input_file)
+void	parsingfile(std::ifstream& input_file, std::map<std::string, double> &map_csv)
 {
 	std::string line;
+	(void) map_csv;
 	std::getline(input_file, line);
 	if (line != "date | value")
 			handle_error(2);
 	while (std::getline(input_file, line))
 	{
 		std::size_t pos = line.find("|");
-		std::string _line = line.substr(0, pos);
-		validdateformat(_line);
-		std::size_t _pos = line.find("|");
-		std::string line_ = line.substr(_pos + 1);
-		skipspace(line_);
-		validvalueformat(line_);
-		// std::cout << ;
+		std::string date = line.substr(0, pos - 1);
+		std::string value = line.substr(pos + 2, line.length());
+		double value_d;
+
+		if (!value.empty())
+			value_d = std::stod(value);
+		
+		if (pos != std::string::npos && validdateformat(date) && validvalueformat(value) && value_d < 1000 && value_d > 0)
+		{
+			std::map<std::string, double>::iterator it = map_csv.lower_bound(date);
+			if (it->first != date)
+				it--;
+			std::cout << date << " => " << value << " = " << it->second * value_d << "\n";
+		}
+		else
+		{
+			if (value_d < 0)
+				std::cout << "Error: not a positive number.\n";
+			else if (value_d > 1000)
+				std::cout << "Error: too large a number.\n";
+	
+		}
 	}
 }
 
-// std::string gettingdate(std::ifstream& input_file)
-// {
-//     std::string line;
-//     while (std::getline(input_file, line))
-//     {
-// 		std::size_t pos = line.find("|");
-// 		std::string sub_line = line.substr(0, pos);
-// 		std::cout << sub_line << std::endl;
-//     }
-// }
-
 int main(int ac, char **av)
 {
+	(void) av;
     if (ac == 2)
     {
-        std::map<std::string, std::string> map_csv;
+        std::map<std::string, double> map_csv;
 	    std::ifstream	data_base("./data.csv");
         if (!data_base.is_open())
             handle_error(1);
         fillMapWithDatabaseData(data_base, map_csv);
+		// std::cout << "file content\n";
+		// for (std::map<std::string, std::string>::iterator it = map_csv.begin(); it != map_csv.end(); ++it) {
+		// 	std::cout << it->first << " " << it->second << "\n";
+		// }
+		// std::cout << "end of file content\n";
+		
         std::ifstream	input_file(av[1]);
         if (input_file.is_open())
 		{
             parsefirstline(input_file);
 			input_file.clear();
 			input_file.seekg(0, std::ios::beg);
-			parsingfile(input_file);
-			// checingdate(input_file);
+			parsingfile(input_file, map_csv);
 		}
     }
     else
