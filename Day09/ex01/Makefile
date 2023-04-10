@@ -5,28 +5,26 @@
 #                                                     +:+ +:+         +:+      #
 #    By: yamzil <yamzil@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/03/23 18:16:34 by yamzil            #+#    #+#              #
-#    Updated: 2023/04/09 06:23:28 by yamzil           ###   ########.fr        #
+#    Created: 2023/04/09 08:11:26 by yamzil            #+#    #+#              #
+#    Updated: 2023/04/09 12:21:19 by yamzil           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = btc
+NAME = RPN
 
 CPPFLAGS = -Wall -Werror -Wextra -std=c++98
 
 FILE = input.txt
 
 SRC = 	main.cpp\
-		utils.cpp\
-		BitcoinExchange.cpp\
+		RPN.cpp\
 
-INC = BitcoinExchange.hpp
+INC = RPN.hpp
 
 OBJ = $(SRC:.cpp=.o)
 
 all: $(NAME)
 	
-
 $(NAME): $(OBJ) $(INC)
 	@c++ $(CPPFLAGS) $(SRC) -o $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: yamzil <yamzil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 18:11:32 by yamzil            #+#    #+#             */
-/*   Updated: 2023/04/07 02:26:12 by yamzil           ###   ########.fr       */
+/*   Updated: 2023/04/09 01:59:06 by yamzil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,19 @@ void	fillMapWithDatabaseData(std::ifstream& data_base, std::map<std::string, dou
 {
 	std::string	line;
 	std::getline(data_base, line);
+	double price;
 	while (std::getline(data_base, line))
     {
 		std::size_t pos = line.find(",");
 		if (pos != std::string::npos)
 		{
 			std::string date = line.substr(0, pos);
-			double price = std::stod(line.substr(pos + 1));
+			try{
+				price = std::stod(line.substr(pos + 1));
+			}
+			catch(const std::exception& e){
+				std::cerr << e.what() << '\n';
+			}
 			map_csv.insert(std::make_pair(date, price));
 		}
     }

@@ -6,16 +6,17 @@
 /*   By: yamzil <yamzil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 18:14:01 by yamzil            #+#    #+#             */
-/*   Updated: 2023/04/07 02:04:13 by yamzil           ###   ########.fr       */
+/*   Updated: 2023/04/09 06:54:54 by yamzil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
+#include <iomanip>
 #include <map>
 #include <cstdlib>
-
+#include <sstream>
+ 
 #pragma once
 
 
@@ -25,4 +26,7 @@
 // }
 
 void	fillMapWithDatabaseData(std::ifstream& data_base, std::map<std::string, double> &map_csv);
+void	parsefirstline(std::ifstream& input_file);
+bool	validvalueformat(std::string& line);
+bool	validdateformat(std::string& line);
 void 	handle_error(int nb);
