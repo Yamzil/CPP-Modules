@@ -6,7 +6,7 @@
 /*   By: yamzil <yamzil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 08:11:58 by yamzil            #+#    #+#             */
-/*   Updated: 2023/04/10 08:25:54 by yamzil           ###   ########.fr       */
+/*   Updated: 2023/04/13 16:19:18 by yamzil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,6 @@ bool	validoperands(std::string& input)
 	}
 	return (true);
 }
-
-
 
 int main(int ac, char **av)
 {

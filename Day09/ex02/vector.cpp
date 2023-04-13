@@ -6,29 +6,39 @@
 /*   By: yamzil <yamzil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 01:25:09 by yamzil            #+#    #+#             */
-/*   Updated: 2023/04/13 03:38:39 by yamzil           ###   ########.fr       */
+/*   Updated: 2023/04/13 18:21:59 by yamzil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
-void	check_error(std::vector<int>& vec)
+void	check_error(std::string& str)
 {
-	for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it){
-		if (!std::isdigit(*it)){
-			std::cerr << "Error" << std::endl;
-			exit (0);
+    std::string::iterator it = str.begin();
+    std::string::iterator end = str.end();
+    
+    if (it != end && (*it == '+')) 
+            ++it;
+    for (; it != end; ++it)
+    {
+        if (!std::isdigit(*it)){
+			std::cerr << *it << " Error" << std::endl;
+            exit(0);
 		}
-	}
+    }
 }
 
 void    fillupvector(std::vector<int>& vec, int input, char **argv)
 {
 	for (int i = 1; i < input; i++){
+		std::string arg = argv[i];
+		check_error(arg);
 		int value = std::atoi(argv[i]);
 		vec.push_back(value);
 	}
 }
+
+
 
 void	insertionsort(std::vector<int>& vec)
 {
@@ -60,7 +70,7 @@ void	merge(std::vector<int>& vec, std::vector<int>& vec_left, std::vector<int>& 
 }
 
 void	mergeInsertionSort(std::vector<int>& vec)
-{
+{ 
 	if (vec.size() < 5) {	
 		insertionsort(vec);
 		return ;

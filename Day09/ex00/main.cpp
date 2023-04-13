@@ -6,7 +6,7 @@
 /*   By: yamzil <yamzil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 22:30:20 by yamzil            #+#    #+#             */
-/*   Updated: 2023/04/09 07:16:55 by yamzil           ###   ########.fr       */
+/*   Updated: 2023/04/13 17:45:51 by yamzil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	parsingfile(std::ifstream& input_file, std::map<std::string, double> &map_c
 
 int main(int ac, char **av)
 {
-	(void) av;
     if (ac == 2)
     {
         std::map<std::string, double> map_csv;

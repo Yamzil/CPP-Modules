@@ -6,11 +6,51 @@
 /*   By: yamzil <yamzil@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 06:23:05 by yamzil            #+#    #+#             */
-/*   Updated: 2023/04/09 07:04:36 by yamzil           ###   ########.fr       */
+/*   Updated: 2023/04/13 18:01:23 by yamzil           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
+
+void 	handle_error(int nb)
+{
+	if (nb == 0){
+		std::cerr << "Few argumments proved" << std::endl;
+    	exit (0);
+	}
+	else if (nb == 1){
+		std::cerr << "cannot open the file" << std::endl;
+    	exit (0);
+	}
+	else if (nb == 2){
+		std::cerr << "first line should be date | value" << std::endl;
+	}
+	else if (nb == 3){
+		std::cerr << "file has multiple/or no date | value" << std::endl;
+	}
+}
+
+void	fillMapWithDatabaseData(std::ifstream& data_base, std::map<std::string, double> &map_csv)
+{
+	std::string	line;
+	std::getline(data_base, line);
+	double price;
+	while (std::getline(data_base, line))
+    {
+		std::size_t pos = line.find(",");
+		if (pos != std::string::npos)
+		{
+			std::string date = line.substr(0, pos);
+			try {
+				price = std::stod(line.substr(pos + 1));
+			}
+			catch (const std::exception& e){
+				std::cerr << e.what() << '\n';
+			}
+			map_csv.insert(std::make_pair(date, price));
+		}
+    }
+}
 
 bool	validvalueformat(std::string& line)
 {
@@ -66,4 +106,3 @@ void	parsefirstline(std::ifstream& input_file)
 	if (_line != 1)
 		handle_error(3);
 }
-
